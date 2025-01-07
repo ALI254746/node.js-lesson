@@ -1,27 +1,29 @@
-// console.log('hello world', __dirname);
-// const logger =() => console.log('hello loger', __filename)
-// logger();
-// // const car ={name:'mers',color:'black'}
-// // const carLogger =() => console.log('logger car')
-// // const user ={name:'hojiakbar'}
-// // const userLogger =()=> console.log('logger user')
-// const userData=require('./node-w3schol/user');
-// const carData=require('./node-w3schol/car');
+const http = require('http');
+const server = http.createServer((req, res) => {
+    if (req.method === 'GET') {
+        res.writeHead(200, {"Content-Type": 'text/html'});
+        res.end(`
+            <h4>Email yuboring</h4>
+            <form method='post' action='/'>
+                <input name="email" type='email' placeholder="Emailingizni kiriting" />
+                <button type="submit">Email yuborish</button>
+            </form>
+        `);
+    } else if (req.method === 'POST') {
+        const email=[];
+        res.writeHead(200,{'content-type': 'text/html;charset=utf-8'})
+        req.on('data',data =>{
+            email.push(Buffer.from(data))
+        })
+        req.on("end", ()=>{
+           const m=email.toString().split('=')[1];
+           console.log(m);
+           res.end(`email added:${m}`);
+        })
+       
+    }
+});
 
-// console.log(userData.user)
-// userData.userLogger()
-
-// console.log(carData.car)
-// carData.carLogger();
-//server yaratish
-const http = require('http')
-const server =http.createServer((req,res)=>{
-    //request -serverga so'rov
-    //response =javaob
-  console.log(req.url)
-//res.write('<h1>hello4 world3</h1')
-res.end('<h1>hello world<h1>')
-})
-server.listen(3000, ()=>{
-    console.log("server has been started on port:3000")
-})
+server.listen(3000, () => {
+    console.log("Server 3000-portda ishga tushdi");
+});
